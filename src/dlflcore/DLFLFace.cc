@@ -27,7 +27,7 @@ namespace DLFL {
 
     The list of DLFLFaceVertexPtr s is circular. So we have to ensure that every node get's traversed
     exactly once.
-    head -> points to beginning of Face. 
+    head -> points to beginning of Face.
 
     if (head)
     {
@@ -53,7 +53,7 @@ namespace DLFL {
 
     if (head)
       {
-				DLFLFaceVertexPtr current = head; 
+				DLFLFaceVertexPtr current = head;
 				int i=0;
 
 				o << "    " << i << " : " << current << endl; current->dump(o);
@@ -194,7 +194,7 @@ namespace DLFL {
       head = NULL;
       return;
     }
-  
+
     n->prev() = p; p->next() = n;
 
     if (head == dfvp) head = n;
@@ -203,12 +203,12 @@ namespace DLFL {
     dfvp->next() = dfvp; dfvp->prev() = dfvp; dfvp->setFacePtr(NULL);
   }
 
-       
+
   void DLFLFace::getVertexCoords(Vector3dArray& verts) {
     // Get the coordinates of the vertices of this face in a Vector3dArray
     verts.clear(); verts.reserve(size());
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       verts.push_back(current->getVertexCoords());
       current = current->next();
       while (current != head) {
@@ -247,7 +247,7 @@ namespace DLFL {
   DLFLFaceVertex& DLFLFace::facevertex(uint index) {
     return *advance(head,index);
   }
-     
+
   DLFLFaceVertex DLFLFace::facevertex(uint index) const {
     return *advance(head,index);
   }
@@ -256,7 +256,7 @@ namespace DLFL {
   DLFLVertexPtr DLFLFace::vertexptr(uint index) {
     return facevertexptr(index)->vertex;
   }
-     
+
   DLFLVertex& DLFLFace::vertex(uint index) {
     return *(facevertexptr(index)->vertex);
   }
@@ -282,7 +282,7 @@ namespace DLFL {
   RGBColor DLFLFace::fv_color(uint index) const {
     return facevertex(index).color;
   }
-     
+
   Vector3d& DLFLFace::fv_normal(uint index) {
     return facevertexptr(index)->normal;
   }
@@ -294,7 +294,7 @@ namespace DLFL {
   // Set the color of all face vertices of this face
   void DLFLFace::setColor(const RGBColor& col) {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->color = col;
       current = current->next();
       while (current != head) {
@@ -306,7 +306,7 @@ namespace DLFL {
 
   void DLFLFace::setColor(double r, double g, double b) {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->color.color.set(r,g,b);
       current = current->next();
       while (current != head) {
@@ -322,7 +322,7 @@ namespace DLFL {
     int start = rand() % 4; // Random no 0,1,2 or 3
 
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->texcoord = unittexcoords[start];
       ++start; start %= 4;
       current = current->next();
@@ -333,7 +333,7 @@ namespace DLFL {
       }
     }
   }
-  
+
   void DLFLFace::updateMaterial(void) {
     if (matl_ptr) matl_ptr->addFace(this);
   }
@@ -341,7 +341,7 @@ namespace DLFL {
   Vector3d DLFLFace::geomSum(void) const {
     Vector3d sumg;
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       sumg = current->vertex->coords;
       current = current->next();
       while (current != head) {
@@ -355,7 +355,7 @@ namespace DLFL {
   Vector2d DLFLFace::textureSum(void) const {
     Vector2d sumtc;
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       sumtc = current->texcoord;
       current = current->next();
       while (current != head) {
@@ -369,7 +369,7 @@ namespace DLFL {
   RGBColor DLFLFace::colorSum(void) const {
     RGBColor sumc;
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       sumc = current->color;
       current = current->next();
       while (current != head) {
@@ -383,7 +383,7 @@ namespace DLFL {
   Vector3d DLFLFace::normalSum(void) const {
     Vector3d sumn;
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       sumn = current->normal;
       current = current->next();
       while (current != head) {
@@ -397,7 +397,7 @@ namespace DLFL {
   void DLFLFace::getSums(
       Vector3d& sumg, Vector2d& sumtc, RGBColor& sumc, Vector3d& sumn) const {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       sumg = current->vertex->coords;
       sumtc = current->texcoord;
       sumc = current->color;
@@ -417,7 +417,7 @@ namespace DLFL {
     centroid.reset();
     if (head) {
       int num = 0;
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       centroid = current->vertex->coords; ++num;
       current = current->next();
       while (current != head) {
@@ -432,7 +432,7 @@ namespace DLFL {
     Vector2d centc;
     if (head) {
       int num = 0;
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       centc = current->texcoord; ++num;
       current = current->next();
       while (current != head) {
@@ -449,7 +449,7 @@ namespace DLFL {
     RGBColor cenc;
     if (head) {
       int num = 0;
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       cenc = current->color; ++num;
       current = current->next();
       while (current != head) {
@@ -511,7 +511,7 @@ namespace DLFL {
       Vector3d& ceng, Vector2d& centc, RGBColor& cenc, Vector3d& cenn) const {
     if (head) {
       int num = 0;
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       ceng = current->vertex->coords;
       centc = current->texcoord;
       cenc = current->color;
@@ -536,7 +536,7 @@ namespace DLFL {
   uint DLFLFace::size(void) const {
     int num=0;
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       ++num; current = current->next();
       while (current != head) {
 				++num; current = current->next();
@@ -548,7 +548,7 @@ namespace DLFL {
   void DLFLFace::resetTypeDeep(void) {
     resetType();
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->resetType();
       current = current->next();
       while (current != head) {
@@ -560,7 +560,7 @@ namespace DLFL {
 
   void DLFLFace::updateFacePointers(void) {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->setFacePtr(this);
       current = current->next();
       while (current != head) {
@@ -572,7 +572,7 @@ namespace DLFL {
 
   void DLFLFace::resetFacePointers(void) {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->setFacePtr(NULL);
       current = current->next();
       while (current != head) {
@@ -584,7 +584,7 @@ namespace DLFL {
 
   void DLFLFace::addFaceVerticesToVertices(void) {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->addSelfToVertex();
       current = current->next();
       while (current != head) {
@@ -597,7 +597,7 @@ namespace DLFL {
   void DLFLFace::deleteFaceVerticesFromVertices(void)
   {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->deleteSelfFromVertex();
       current = current->next();
       while (current != head) {
@@ -609,7 +609,7 @@ namespace DLFL {
 
   void DLFLFace::addFaceVerticesToEdges(void) {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->addSelfToEdge();
       current = current->next();
       while (current != head) {
@@ -621,7 +621,7 @@ namespace DLFL {
 
   void DLFLFace::deleteFaceVerticesFromEdges(void) {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->deleteSelfFromEdge();
       current = current->next();
       while (current != head) {
@@ -633,7 +633,7 @@ namespace DLFL {
 
   void DLFLFace::addFaceVerticesToVerticesAndEdges(void) {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->addSelfToVertex();
       current->addSelfToEdge();
       current = current->next();
@@ -647,7 +647,7 @@ namespace DLFL {
 
   void DLFLFace::deleteFaceVerticesFromVerticesAndEdges(void) {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->deleteSelfFromVertex();
       current->deleteSelfFromEdge();
       current = current->next();
@@ -666,10 +666,10 @@ namespace DLFL {
     // Atleast 2 vertices are there in this DLFLFace (atleast 3 should be there,
     // but that doesn't affect this function)
     *edges = new DLFLEdge[length];
-  
+
     if (head) {
       int index = 0;
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
 
       edges[0][length-1].setFaceVertexPtr2(current);  // Last Edge
       edges[0][index].setFaceVertexPtr1(current);     // First Edge
@@ -785,7 +785,7 @@ namespace DLFL {
   bool DLFLFace::contains(DLFLFaceVertexPtr fvptr) {
 		if (fvptr) {
 	    if (head) {
-	      DLFLFaceVertexPtr current = head; 
+	      DLFLFaceVertexPtr current = head;
 	      if (current == fvptr) return true;
 	      current = current->next();
 	      while (current != head) {
@@ -819,7 +819,7 @@ namespace DLFL {
       if (numSharedVerts == 1) return true;
       else return false;
     }
-    return false;	
+    return false;
   }
 
   //store all neighboring faces in fparray, passed by reference
@@ -830,14 +830,14 @@ namespace DLFL {
     vector<DLFLFacePtr>::iterator it;
     current->getVertexPtr()->getFaces(fparr);
     for (it = fparr.begin(); it != fparr.end(); it++) {
-      if ((*it) != this) 
+      if ((*it) != this)
 				fparray.push_back((*it));
-    }	
+    }
     current = current->next();
     while (current != head) {
       current->getVertexPtr()->getFaces(fparr);
       for (it = fparr.begin(); it != fparr.end(); it++) {
-				if ((*it) != this) 
+				if ((*it) != this)
 					fparray.push_back((*it));
       }
       current = current->next();
@@ -896,7 +896,7 @@ namespace DLFL {
 				cur2 = fp2->findClosest(cur1->vertex->coords);
 				dist = normsqr(cur1->vertex->coords - cur2->vertex->coords);
 				if (dist < mindist) {
-					mindist = dist; fvp1 = cur1; fvp2 = cur2; 
+					mindist = dist; fvp1 = cur1; fvp2 = cur2;
 				}
 				cur1 = cur1->next();
       }
@@ -912,7 +912,7 @@ namespace DLFL {
     else fvp = new_fvp;
 
     fvp->setFacePtr(this);
-  
+
     fvp->next() = fvptr->next();
     fvp->next()->prev() = fvp;
     fvp->prev() = fvptr;
@@ -942,7 +942,7 @@ namespace DLFL {
     // Reverse the order of face-vertices in the face
     // For every face-vertex, swap the previous and next fields
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       current->reverse();
       current = current->next();
       while (current != head) {
@@ -1016,13 +1016,13 @@ namespace DLFL {
       cout << current->getVertexID();
       cout << '[' << current->backface << ']';
       if (current->getEdgePtr() != NULL)
-				cout << "--(" << current->getEdgeID() << ")-->";   
+				cout << "--(" << current->getEdgeID() << ")-->";
       current = current->next();
       while (current != head) {
 				cout << current->getVertexID();
 				cout << '[' << current->backface << ']';
 				if (current->getEdgePtr() != NULL)
-					cout << "--(" << current->getEdgeID() << ")-->";   
+					cout << "--(" << current->getEdgeID() << ")-->";
 				current = current->next();
       }
       cout << current->getVertexID() << '[' << current->backface << ']' << endl;
@@ -1036,7 +1036,7 @@ namespace DLFL {
   void DLFLFace::printPointers(void) const {
     cout << "DLFLFace " << uID << " (" << size() << ") : ";
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       cout << current;
       cout << "--(" << current->getEdgePtr() << ")-->";
       current = current->next();
@@ -1054,7 +1054,7 @@ namespace DLFL {
     uint index;
     if (head) {
       o << 'f';
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       index = current->getVertexID() - min_id;
       o << ' ' << index;
       current = current->next();
@@ -1072,7 +1072,7 @@ namespace DLFL {
     uint index;
     if (head) {
       o << 'f';
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       index = current->getVertexID() - min_id;
       o << ' ' << index << "//" << normal_id_start;
       ++normal_id_start;
@@ -1092,7 +1092,7 @@ namespace DLFL {
     uint index;
     if (head) {
       o << 'f';
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       index = current->getVertexID() - min_id;
       o << ' ' << index << '/' << tex_id_start;
       ++tex_id_start;
@@ -1112,7 +1112,7 @@ namespace DLFL {
     uint index;
     if (head) {
       o << 'f';
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       index = current->getVertexID() - min_id;
       o << ' ' << index << '/' << tex_id_start << '/' << normal_id_start;
       ++tex_id_start; ++normal_id_start;
@@ -1131,7 +1131,7 @@ namespace DLFL {
   void DLFLFace::objWriteNormals(ostream& o) const {
     if (head) {
       Vector3d n;
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       n = current->getNormal();
       o << "vn " << n[0] << ' ' << n[1] << ' ' << n[2] << endl;
       current = current->next();
@@ -1147,7 +1147,7 @@ namespace DLFL {
   void DLFLFace::objWriteTexCoords(ostream& o) const {
     if (head) {
       Vector2d t;
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       t = current->getTexCoords();
       o << "vt " << t[0] << ' ' << t[1] << endl;
       current = current->next();
@@ -1161,9 +1161,9 @@ namespace DLFL {
 
   void DLFLFace::writeDLFL(ostream& o) const {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       o << 'f';
-      //o << " {" << getID() << "}"; 
+      //o << " {" << getID() << "}";
       o << ' ' << current->getIndex();
       current = current->next();
       while (current != head) {
@@ -1176,9 +1176,9 @@ namespace DLFL {
 
   void DLFLFace::writeDLFLReverse(ostream& o) const {
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       o << 'f';
-      //o << " {" << getID() << "}";   
+      //o << " {" << getID() << "}";
       o << ' ' << current->getIndex();
       current = current->prev();
       while (current != head) {
@@ -1192,7 +1192,7 @@ namespace DLFL {
   void DLFLFace::for_each(void (*func)(DLFLFaceVertexPtr)) const {
     // Apply given function to every face-vertex in the face starting at head
     if (head) {
-      DLFLFaceVertexPtr current = head; 
+      DLFLFaceVertexPtr current = head;
       func(current);
       current = current->next();
       while (current != head) {
@@ -1205,7 +1205,7 @@ namespace DLFL {
   ostream& operator << (ostream& o, const DLFLFace& face) {
     o << "Face (" << face.size() << ") : ";
     if (face.head) {
-      DLFLFaceVertexPtr current = face.head; 
+      DLFLFaceVertexPtr current = face.head;
       o << current->vertex->coords;
       current = current->next();
       while (current != face.head) {
@@ -1221,7 +1221,7 @@ namespace DLFL {
 
 		vector<DLFLEdgePtr>::iterator eit;
 		DLFLEdgePtrArray eptrarray;
-		
+
 		float area = 0;
 		//get the edges for the current face
 		getEdges(eptrarray);
@@ -1300,7 +1300,7 @@ namespace DLFL {
     suLastID++;
     return temp;
   }
-   
+
   // Assign a unique ID for this instance
   void DLFLFace::assignID(void) {
     uID = DLFLFace :: newID();
@@ -1345,8 +1345,8 @@ namespace DLFL {
   Vector3d DLFLFace::getAuxNormal(void) const {
     return auxnormal;
   }
-   
-  Vector3d DLFLFace::getNormal(bool update=false) {
+
+  Vector3d DLFLFace::getNormal(bool update) {
     if(update)
       updateNormal();
     return normal;
@@ -1371,7 +1371,7 @@ namespace DLFL {
   void DLFLFace::deleteFaceVertexPtr(DLFLFaceVertexPtr dfvp) {
     deleteVertexPtr(dfvp);
   }
-   
+
   // STL list type access to the Face
   DLFLFaceVertexPtr DLFLFace::front(void) {
     return head;
@@ -1407,7 +1407,7 @@ namespace DLFL {
   void DLFLFace::setAuxNormal(const Vector3d& n) {
     auxnormal = n;
   }
-   
+
   void DLFLFace::addToAuxCoords(const Vector3d& p) {
     auxcoords += p;
   }
@@ -1415,7 +1415,7 @@ namespace DLFL {
   void DLFLFace::addToAuxNormal(const Vector3d& n) {
     auxnormal += n;
   }
-   
+
   void DLFLFace::resetAuxCoords(void) {
     auxcoords.reset();
   }
@@ -1423,7 +1423,7 @@ namespace DLFL {
   void DLFLFace::resetAuxNormal(void) {
     auxnormal.reset();
   }
-   
+
   uint DLFLFace::numFaceVertexes(void) const {
     return size();
   }
@@ -1496,7 +1496,7 @@ namespace DLFL {
       }
 
       //--- Same as above but with texturing also ---//
-     
+
       void render_FVNT(void) const
       {
       DLFLFace :: glBeginP(size());
@@ -1531,7 +1531,7 @@ namespace DLFL {
       }
 
       //-- Friend versions of above functions --//
-     
+
       void outline_FVC(void) const                      // Render outline using FV colors
       {
       DLFLFace :: glBeginO(size());

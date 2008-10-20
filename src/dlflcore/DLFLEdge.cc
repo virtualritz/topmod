@@ -145,7 +145,7 @@ namespace DLFL {
   {
     bool same = false;
     uint e11,e12,e21,e22;
-  
+
     e11 = e1.fvpV1->getVertexID();
     e12 = e1.fvpV2->getVertexID();
     e21 = e2.fvpV1->getVertexID();
@@ -195,7 +195,7 @@ namespace DLFL {
       {
 	return false; // Co-linear edges
       }
-  
+
     // Check the sum between n1 and n2
     // If difference is 0, the points are co-planar but ep2 lies
     // entirely on one side of ep1, so there is no possibility of intersection
@@ -216,7 +216,7 @@ namespace DLFL {
       }
     return intersects;
   }
-       
+
   ostream& operator << (ostream& o, const DLFLEdge& e)
   {
     o << "Edge " << e.getID() << " : "
@@ -257,7 +257,7 @@ namespace DLFL {
   {
     Vector3d p1,p2;                                      // 2 ends of the Edges
     Vector3d p(x,y,z);
-  
+
     p1 = fvpV1->vertex->coords;
     p2 = fvpV2->vertex->coords;
 
@@ -296,7 +296,7 @@ namespace DLFL {
     Vector3d p1temp,p2temp;
     Vector2d p1,p2;
     Vector2d p(x,y);
-  
+
     p1temp = fvpV1->vertex->coords;
     p2temp = fvpV2->vertex->coords;
 
@@ -337,7 +337,7 @@ namespace DLFL {
     Vector3d p1temp,p2temp;
     Vector2d p1,p2;
     Vector2d p(y,z);
-  
+
     p1temp = fvpV1->vertex->coords;
     p2temp = fvpV2->vertex->coords;
 
@@ -378,7 +378,7 @@ namespace DLFL {
     Vector3d p1temp,p2temp;
     Vector2d p1,p2;
     Vector2d p(z,x);
-  
+
     p1temp = fvpV1->vertex->coords;
     p2temp = fvpV2->vertex->coords;
 
@@ -421,12 +421,12 @@ namespace DLFL {
   }
 
 
-  void resetEdgeType(DLFLEdgePtr dep) 
+  void resetEdgeType(DLFLEdgePtr dep)
   {
     dep->resetType();
   }
 
-  void makeEdgeUnique(DLFLEdgePtr dep) 
+  void makeEdgeUnique(DLFLEdgePtr dep)
   {
     dep->makeUnique();
   }
@@ -487,7 +487,7 @@ namespace DLFL {
     suLastID++;
     return temp;
   }
-   
+
   // Assign a unique ID for this instance
   void DLFLEdge::assignID() {
     uID = DLFLEdge :: newID();
@@ -504,7 +504,7 @@ namespace DLFL {
 
   // 2 & 3 argument constructor
   DLFLEdge::DLFLEdge(
-      DLFLFaceVertexPtr fvp1, DLFLFaceVertexPtr fvp2, bool update=true)
+      DLFLFaceVertexPtr fvp1, DLFLFaceVertexPtr fvp2, bool update)
       :fvpV1(fvp1), fvpV2(fvp2), etType(ETNormal), auxcoords(), auxnormal(),
       midpoint(), normal(), flags(0) {
     if ( update ) {
@@ -537,7 +537,7 @@ namespace DLFL {
     return (*this);
   }
 
-  // Copy function 
+  // Copy function
   DLFLEdgePtr DLFLEdge::copy(void) const {
     DLFLEdgePtr eptr = new DLFLEdge(*this);
     return eptr;
@@ -555,7 +555,7 @@ namespace DLFL {
   Vector3d DLFLEdge::getAuxNormal(void) const {
     return auxnormal;
   }
-   
+
   void DLFLEdge::setType(DLFLEdgeType type) {
     etType = type;
   }
@@ -571,7 +571,7 @@ namespace DLFL {
   void DLFLEdge::setAuxNormal(const Vector3d& n) {
     auxnormal = n;
   }
-   
+
   void DLFLEdge::addToAuxCoords(const Vector3d& p) {
     auxcoords += p;
   }
@@ -579,7 +579,7 @@ namespace DLFL {
   void DLFLEdge::addToAuxNormal(const Vector3d& n) {
     auxnormal += n;
   }
-   
+
   void DLFLEdge::resetAuxCoords(void) {
     auxcoords.reset();
   }
@@ -587,7 +587,7 @@ namespace DLFL {
   void DLFLEdge::resetAuxNormal(void) {
     auxnormal.reset();
   }
-         
+
   // Query functions
   DLFLFaceVertexPtr DLFLEdge::getFaceVertexPtr1(void) const {
     return fvpV1;
@@ -623,20 +623,20 @@ namespace DLFL {
     return uID;
   }
 
-  Vector3d DLFLEdge::getMidPoint(bool update=false) {
+  Vector3d DLFLEdge::getMidPoint(bool update) {
     if( update )
       updateMidPoint();
     return midpoint;
   }
 
-  Vector3d DLFLEdge::getNormal(bool update=false) {
+  Vector3d DLFLEdge::getNormal(bool update) {
     if( update )
       updateNormal();
     return normal;
   }
 
   // Mutative functions
-  void DLFLEdge::setFaceVertexPtr1(DLFLFaceVertexPtr fvptr, bool update=true) {
+  void DLFLEdge::setFaceVertexPtr1(DLFLFaceVertexPtr fvptr, bool update) {
     fvpV1 = fvptr;
     if ( update ) {
       updateNormal();
@@ -644,7 +644,7 @@ namespace DLFL {
     updateMidPoint();
   }
 
-  void DLFLEdge::setFaceVertexPtr2(DLFLFaceVertexPtr fvptr, bool update=true) {
+  void DLFLEdge::setFaceVertexPtr2(DLFLFaceVertexPtr fvptr, bool update) {
     fvpV2 = fvptr;
     if ( update ) {
       updateNormal();
@@ -653,7 +653,7 @@ namespace DLFL {
   }
 
   void DLFLEdge::setFaceVertexPointers(
-      DLFLFaceVertexPtr fvptr1, DLFLFaceVertexPtr fvptr2, bool update=true) {
+      DLFLFaceVertexPtr fvptr1, DLFLFaceVertexPtr fvptr2, bool update) {
     fvpV1 = fvptr1;
     fvpV2 = fvptr2;
     if ( update ) {
@@ -661,7 +661,7 @@ namespace DLFL {
     }
     updateMidPoint();
   }
-   
+
   void DLFLEdge::makeUnique(void) {
     assignID();
   }
@@ -677,7 +677,7 @@ namespace DLFL {
     if ( fvpV1 == fvptr ) fvpV1 = NULL;
     else if ( fvpV2 == fvptr ) fvpV2 = NULL;
   }
-   
+
   void DLFLEdge::print(void) const {
     printFaceIDs();
   }
@@ -689,7 +689,7 @@ namespace DLFL {
 
     // Check if fvptr belongs to Edge
     if ( fvpV1 != fvptr && fvpV2 != fvptr ) return enormal;
-  
+
     Vector3d normal = fvptr->computeNormal(); // Surface normal at corner
     Vector3d edge_vector = normalized(fvpV2->getVertexCoords() - fvpV1->getVertexCoords()); // Edge vector
 
