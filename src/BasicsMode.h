@@ -21,6 +21,7 @@
 #include "tools/splice_corners_tool.h"
 #include "tools/dup_component_tool.h"
 #include "tools/geometric_tool.h"
+#include "tools/create_crust_tool.h"
 
 class MainWindow;
 class InsertEdgeTool;
@@ -31,6 +32,7 @@ class SubdivideEdgeTool;
 class SpliceCornersTool;
 class DupComponentTool;
 class GeometricTool;
+class CreateCrustTool;
 
 class QComboBox;
 class QPushButton;
@@ -60,6 +62,7 @@ private:
   ConnectEdgesTool *connect_edges_tool_;
   SubdivideEdgeTool *subdivide_edge_tool_;
   SpliceCornersTool *splice_corners_tool_;
+  CreateCrustTool *create_crust_tool_;
 
 public slots:
 

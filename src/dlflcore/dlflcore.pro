@@ -14,14 +14,16 @@ macx {
  CONFIG += x86 ppc
  #CONFIG += lib_bundle
  #QMAKE_BUNDLE_EXTENSION = .framework
-#} else:unix {
+} else:unix {
  QMAKE_LFLAGS += -L../../lib
- #LIBS += -lvecmat
+ LIBS += -lvecmat
  QMAKE_CXXFLAGS_DEBUG += -pg
  QMAKE_LFLAGS_DEBUG += -pg
-}
-else:win32 {
-
+} else:win32 {
+  QMAKE_LFLAGS += -L../../lib
+  LIBS += -lvecmat
+  QMAKE_CXXFLAGS_DEBUG += -pg
+  QMAKE_LFLAGS_DEBUG += -pg
 }
 
 HEADERS +=  \
@@ -33,7 +35,7 @@ HEADERS +=  \
           	DLFLFaceVertex.h \
           	DLFLMaterial.h \
           	DLFLObject.h \
-          	DLFLVertex.h
+          	DLFLVertex.h 
 
 SOURCES +=  \
           	DLFLCommon.cc \

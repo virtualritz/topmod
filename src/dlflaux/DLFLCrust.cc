@@ -33,7 +33,7 @@ namespace DLFL {
     crust_num_old_faces = obj->num_faces();
     crustfp1.resize(crust_num_old_faces,NULL);
     crustfp2.resize(crust_num_old_faces,NULL);
-  
+
     StringStream dlflstream; // Stream used to duplicate the object
     StringStream mtlstream; // Stream used to duplicate the object
 
@@ -57,7 +57,7 @@ namespace DLFL {
       crustfp1[num_faces] = fp; fp->makeUnique(); fp->storeNormals();
       ++fl_first; ++num_faces;
     }
-    num_faces = 0; 
+    num_faces = 0;
     while ( fl_first != fl_last ) {
       fp = *fl_first;
       crustfp2[num_faces] = fp; fp->makeUnique(); fp->storeNormals();
@@ -72,7 +72,7 @@ namespace DLFL {
     Vector3d avenormal, newpos;
     double mod_thickness; // Modified thickness for uniform thickness shells
     int num_verts = 0;
-		//negative thickness
+	//negative thickness
     if ( thickness < 0.0 ) {
       vl_first = obj->beginVertex();
       while ( num_verts < num_old_verts ) {
@@ -95,8 +95,8 @@ namespace DLFL {
 				vp->coords = newpos;
       }
     }
-		//thickness > 0
-		else {
+	//thickness > 0
+	else {
       vl_first = obj->beginVertex(); vl_last = obj->endVertex();
       advance(vl_first,num_old_verts);
       while ( vl_first != vl_last ) {
@@ -115,7 +115,7 @@ namespace DLFL {
 				}
 				// Positive sign because thickness is positive and normal is inward
 				// Use the modified thickness
-				newpos = vp->coords + mod_thickness*avenormal; 
+				newpos = vp->coords + mod_thickness*avenormal;
 				vp->coords = newpos;
       }
     }
@@ -132,7 +132,7 @@ namespace DLFL {
 
   void createCrustWithScaling(DLFLObjectPtr obj, double scale_factor) {
     if ( !isNonZero(scale_factor) ) return;
-  
+
     // Clear the arrays used to store crust modeling information
     crustfp1.clear(); crustfp2.clear();
 
@@ -140,7 +140,7 @@ namespace DLFL {
     crust_num_old_faces = obj->num_faces();
     crustfp1.resize(crust_num_old_faces,NULL);
     crustfp2.resize(crust_num_old_faces,NULL);
-  
+
     StringStream dlflstream; // Stream used to duplicate the object
     StringStream mtlstream; // Stream used to duplicate the object
 
@@ -172,7 +172,7 @@ namespace DLFL {
       crustfp1[num_faces] = fp; fp->makeUnique();
       ++fl_first; ++num_faces;
     }
-    num_faces = 0; 
+    num_faces = 0;
     while ( fl_first != fl_last ) {
       fp = *fl_first;
       crustfp2[num_faces] = fp; fp->makeUnique();
@@ -183,7 +183,7 @@ namespace DLFL {
     // to get scale factor > 1
     if ( scale_factor < -1.0 ) scale_factor = -1.0;
     else if ( scale_factor > 1.0 ) scale_factor = 1.0;
-  
+
     // If scale_factor is negative scale the old vertices using scale_factor > 1
     // Otherwise scale the new vertices using scale_factor < 1
     DLFLVertexPtrList::iterator vl_first, vl_last;
@@ -218,7 +218,7 @@ namespace DLFL {
     DLFLFacePtr fp1,fp2;
     DLFLFaceVertexPtr fvp1,fvp2;
     DLFLEdgePtrArray eparray1, eparray2;
-  
+
     if ( index > crust_num_old_faces ) index -= crust_num_old_faces;
     if ( index >= crustfp1.size() ) {
       cout << "Index out of range " << index << endl;
@@ -251,7 +251,7 @@ namespace DLFL {
 				    // We have an infinitesimally thin face which we want to remove
 				    // We can use either of the 2 faces to do the deletion of the edges
 				    DLFLEdgePtrArray eparray;
-						
+
 				    // Get all the edges in one of the faces
 				    fp11->getEdges(eparray);
 
@@ -264,13 +264,13 @@ namespace DLFL {
 			}
 		}
 		else cout << "NULL pointers found" << endl;
-		
+
 	}
 
   void createCrustForWireframe(DLFLObjectPtr obj, double thickness) {
-	
+
 		bool uniform = true;
-		
+
     if ( !isNonZero(thickness) ) return;
 
     // Clear the arrays used to store crust modeling information
@@ -280,7 +280,7 @@ namespace DLFL {
     crust_num_old_faces = obj->num_faces();
     crustfp1.resize(crust_num_old_faces,NULL);
     crustfp2.resize(crust_num_old_faces,NULL);
-  
+
     StringStream dlflstream; // Stream used to duplicate the object
     StringStream mtlstream; // Stream used to duplicate the object
 
@@ -304,7 +304,7 @@ namespace DLFL {
       crustfp1[num_faces] = fp; fp->makeUnique(); fp->storeNormals();
       ++fl_first; ++num_faces;
     }
-    num_faces = 0; 
+    num_faces = 0;
     while ( fl_first != fl_last ) {
       fp = *fl_first;
       crustfp2[num_faces] = fp; fp->makeUnique(); fp->storeNormals();
@@ -346,12 +346,12 @@ namespace DLFL {
     }
     if ( thickness > 0.0 ) {
       vl_first = obj->beginVertex(); vl_first_old= obj->beginVertex();
-      for (int i = 0; i < num_old_verts; i++) 
+      for (int i = 0; i < num_old_verts; i++)
 				++vl_first_old;
-				
+
 				      while (  num_verts < num_old_verts) {
 				vpNew = (*vl_first_old); vp = (*vl_first); ++vl_first; ++num_verts; ++vl_first_old;
-				
+
 				DLFLFaceVertexPtrList fvpList;
 				DLFLFaceVertexPtr fvp1,fvp2,fvp0, fvp3, fvp4, fvptemp, fvptemp1, fvptemp2;
 				DLFLFacePtr fphole, fp1, fp2, fp;
@@ -359,72 +359,72 @@ namespace DLFL {
 				Vector3d v0, v1, v2, v3, v4, n1, n2, n3 ,n4, ntemp;
 				DLFLFaceVertexPtrList fvplist;
 				fvplist=vp->getFaceVertexList();
-				
+
 				// get the face that has the current vertex as one of its vertices
 				// and is marked for making a hole
 				DLFLFaceVertexPtrList::iterator first = fvplist.begin(), last = fvplist.end();
 				while ( first != last ) {
 					fvptemp = (*first);
-					fp = fvptemp->getFacePtr();		
-				
+					fp = fvptemp->getFacePtr();
+
 				 	if ( fp->getType() == FTHole ) {
 				   	fphole = fp; break;
 				 	}
 				 	++first;
 				}
 				fp = fphole;
-				
+
 				fvp0 = vp->getFaceVertexInFace(fp);
 				fvp1 = fvp0->next();
 				fvp2 = fvp0->prev();
-				
+
 				// get vertex pointers
 				// vp1 = fvp1->getVertexPtr(); vp2 = fvp2->getVertexPtr();
-				
+
 				// Get the two edges originating from the present vertex
-				ep0 = fvp0->getEdgePtr(); ep1 = fvp2->getEdgePtr(); 
-				
-				// For the edge starting at v0 to wards v1 
+				ep0 = fvp0->getEdgePtr(); ep1 = fvp2->getEdgePtr();
+
+				// For the edge starting at v0 to wards v1
 				ep0->getFacePointers(fp1,fp2);
-				
+
 				// get the face to NOT be holed
 				if ( fp1->getType() == FTHole ) fp = fp2;
 				else fp = fp1;
-					    
+
 				// get the three face vertices
 				fvptemp = vp->getFaceVertexInFace(fp);
 				fvptemp1 = fvptemp->next();
-				
+
 				// get the vertices of the other two vertices in the face
 				//vptemp1 = fvptemp1->getVertexPtr();
-				
+
 				fvp3 = fvptemp1;
-				
+
 				// For the edge starting at v1 towards v0
 				// Same as before after this
 				ep1->getFacePointers(fp1, fp2);
 				if ( fp1->getType() == FTHole ) fp = fp2;
 				else fp = fp1;
-				
+
 				fvptemp = vp->getFaceVertexInFace(fp);
 				fvptemp2 = fvptemp->prev();
-				
+
 				//vptemp2 = fvptemp2->getVertexPtr();
 				fvp4 = fvptemp2;
-				
+
 				// Get the vertex coordinates of the five face vertices found
 				v0 = fvp0->getVertexCoords();
 				v1 = fvp1->getVertexCoords();
 				v2 = fvp2->getVertexCoords();
 				v3 = fvp3->getVertexCoords();
 				v4 = fvp4->getVertexCoords();
-						
+
 				n1 = normalized( (v1-v0) % (v3-v0) );
 				n2 = normalized( n1 % (v1-v0) );
 				n3 = normalized( (v2-v0)% ( v4-v0) );
 				n4 = normalized( (v2-v0) % n3 );
 				normal = normalized(n2 % n4); // normal is the direction in which the new_pos will lie.
-				
+
 				newpos = vpNew->coords - thickness*normal;
 				vpNew->coords = newpos;
 				      }
@@ -446,10 +446,10 @@ namespace DLFL {
 				// 		}
 				// 		// Positive sign because thickness is positive and normal is inward
 				// 		// Use the modified thickness
-				// 		newpos = vp->coords + mod_thickness*avenormal; 
+				// 		newpos = vp->coords + mod_thickness*avenormal;
 				// 		vp->coords = newpos;
 				// 		    }
-		    
+
     }
 
     // Find and store the min. id for the face list
@@ -466,7 +466,7 @@ namespace DLFL {
     crust_num_old_faces = obj->num_faces();
     crustfp1.resize(crust_num_old_faces,NULL);
     crustfp2.resize(crust_num_old_faces,NULL);
-  
+
     StringStream dlflstream; // Stream used to duplicate the object
     StringStream mtlstream; // Stream used to duplicate the object
 
@@ -490,7 +490,7 @@ namespace DLFL {
       crustfp1[num_faces] = fp; fp->makeUnique(); fp->storeNormals();
       ++fl_first; ++num_faces;
     }
-    num_faces = 0; 
+    num_faces = 0;
     while ( fl_first != fl_last ) {
       fp = *fl_first;
       crustfp2[num_faces] = fp; fp->makeUnique(); fp->storeNormals();
@@ -511,7 +511,7 @@ namespace DLFL {
     }
     if ( scale_factor > 0.0 ) {
       vl_first = obj->beginVertex(); vl_first_old= obj->beginVertex();
-      for (int i = 0; i < num_old_verts; i++) 
+      for (int i = 0; i < num_old_verts; i++)
 				++vl_first_old;
 
       while (  num_verts < num_old_verts) {
@@ -530,7 +530,7 @@ namespace DLFL {
 				DLFLFaceVertexPtrList::iterator first = fvplist.begin(), last = fvplist.end();
 				while ( first != last ) {
 					fvptemp = (*first);
-					fp = fvptemp->getFacePtr();		
+					fp = fvptemp->getFacePtr();
 
 				 	if ( fp->getType() == FTHole ) {
 				   	fphole = fp; break;
@@ -547,15 +547,15 @@ namespace DLFL {
 				//vp1 = fvp1->getVertexPtr(); vp2 = fvp2->getVertexPtr();
 
 				// Get the two edges originating from the present vertex
-				ep0 = fvp0->getEdgePtr(); ep1 = fvp2->getEdgePtr(); 
+				ep0 = fvp0->getEdgePtr(); ep1 = fvp2->getEdgePtr();
 
-				// For the edge starting at v0 to wards v1 
+				// For the edge starting at v0 to wards v1
 				ep0->getFacePointers(fp1,fp2);
 
 				// get the face to NOT be holed
 				if ( fp1->getType() == FTHole ) fp = fp2;
 				else fp = fp1;
-	    
+
 				// get the three face vertices
 				fvptemp = vp->getFaceVertexInFace(fp);
 				fvptemp1 = fvptemp->next();
@@ -583,7 +583,7 @@ namespace DLFL {
 				v2 = fvp2->getVertexCoords();
 				v3 = fvp3->getVertexCoords();
 				v4 = fvp4->getVertexCoords();
-		
+
 				n1 = normalized( (v1-v0) % (v3-v0) );
 				n2 = normalized( n1 % (v1-v0) );
 				n3 = normalized( (v2-v0)% ( v4-v0) );
@@ -664,7 +664,7 @@ namespace DLFL {
 
     while ( num<numVerts ) {
       vp =(*vl_first);
-    
+
       ++vl_first; num++;
       fvparray.clear();
 
@@ -683,12 +683,12 @@ namespace DLFL {
 	vp->getEdges(edge_array);
 	length = -99999;	// the largest length for the vertex
 
-	//FIND THE LARGEST DISTANCE FORM THE VERTEX FOR THE NEW FACE TO BE PUT if 
-	for (int  i=0; i<fvparray.size(); i++) {  
+	//FIND THE LARGEST DISTANCE FORM THE VERTEX FOR THE NEW FACE TO BE PUT if
+	for (int  i=0; i<fvparray.size(); i++) {
 	  eptr_temp1 = (fvparray[i])->getEdgePtr();
 	  for (int  ii=0; ii<fvparray.size(); ii++) {
 	    eptr_temp2 = (fvparray[ii])->getEdgePtr();
-	    if (eptr_temp1->getID() != eptr_temp2->getID()) {	 
+	    if (eptr_temp1->getID() != eptr_temp2->getID()) {
 	      edgeVec1 = (eptr_temp1->getOtherVertexPointer(vp))->getCoords() - vp->getCoords();
 	      edgeVec2 = (eptr_temp2->getOtherVertexPointer(vp))->getCoords() - vp->getCoords();
 	      edgeVec1 =normalized(edgeVec1);
@@ -696,11 +696,11 @@ namespace DLFL {
 	      cosT1 = edgeVec1*edgeVec2; //axis;
 	      T1 = acos(cosT1);
 	      L= thickness/tan(T1/2);
-	      if (L > length)  length = L + fabs(cosT1*thickness)+ 0.001*thickness; 
+	      if (L > length)  length = L + fabs(cosT1*thickness)+ 0.001*thickness;
 	    }//if
 	  }//for
 	}//for largest distance
-	
+
       }// valence 1
       else length = 0;
 
@@ -714,7 +714,7 @@ namespace DLFL {
 	else index += 1;
 
 	eptr->setType(ETChull);
-	
+
 	eptr->getFacePointers(tmpfptr1,tmpfptr2);
 	edgeVector = normalized((eptr->getOtherVertexPointer(vp))->getCoords() - vp->getCoords());
 	axis = edgeVector;
@@ -724,15 +724,15 @@ namespace DLFL {
 	  dir = normalized(edgeVector % vec);
 	}
 	else if ( fvparray.size() == 2 )
-	  dir = (((tmpfptr1)->computeNormal() +(tmpfptr2)->computeNormal())/2);	 
+	  dir = (((tmpfptr1)->computeNormal() +(tmpfptr2)->computeNormal())/2);
 	else {
 	  dirFvp1 = vp->getFaceVertexInFace(tmpfptr1);
 	  dirFvp2 = vp->getFaceVertexInFace(tmpfptr2);
 	  Ndir1 = ((dirFvp1->next())->getVertexCoords() - vp->getCoords()) %
 	    ((dirFvp1->prev())->getVertexCoords() - vp->getCoords());
 	  Ndir2 = ((dirFvp2->next())->getVertexCoords() - vp->getCoords()) %
-	    ((dirFvp2->prev())->getVertexCoords() - vp->getCoords());				
-	  dir = (normalized(Ndir1) + normalized(Ndir2))/2;				
+	    ((dirFvp2->prev())->getVertexCoords() - vp->getCoords());
+	  dir = (normalized(Ndir1) + normalized(Ndir2))/2;
 	}
 
 	//start point with axis translated to origin (+vertex - vertex)
@@ -753,7 +753,7 @@ namespace DLFL {
 	  Quaternion rotp;
 	  rotp = rot * start_point * conjugate(rot);
 	  xyz.set(rotp[0],rotp[1],rotp[2]);
-	   
+
 	  //move back from origin
 	  xyz = xyz + vp->getCoords();
 	  vertlist.push_back(xyz);       //vertlist for vertex convex hull
@@ -763,19 +763,19 @@ namespace DLFL {
 	  obj->createFace(temp_vertlist);
 	  fl_last = obj->endFace();
 	  --fl_last;--fl_last;
-	  valOneFace = *fl_last;	 
-	}		
+	  valOneFace = *fl_last;
+	}
 	normal= axis;
 	edge_connect_normals[index] = normalized(normal);
 	temp_vertlist.clear();
-      }//for 
+      }//for
 
       //join the corresponding vertices of the new faces created for this vertex
 
       DLFLConvexHull convexhull;
       DLFLFacePtrArray chfparray;
       DLFLVertexPtrArray vparray, vparrayOrdered;
-      DLFLFacePtr chfp; 
+      DLFLFacePtr chfp;
       Vector3d sfpn, chfpn;
       DLFLFaceVertexPtrArray corners;
       IntArray matched_face_indx;
@@ -788,9 +788,9 @@ namespace DLFL {
 
       num_ch_verts = fvparray.size()*numSides;
       for(int i = 0; i < num_ch_verts ; i++) {
-	vparrayOrdered.push_back(NULL);      
+	vparrayOrdered.push_back(NULL);
       }
-      if ( fvparray.size() == 1 ) { 
+      if ( fvparray.size() == 1 ) {
 	num_ch_faces = 1;
 	valOneFace->getCorners(corners);
 	for (int j = 0; j < corners.size(); j++) {
@@ -800,7 +800,7 @@ namespace DLFL {
 	  vparrayOrdered[temp_index] = temp_vptr;
 	}
 	jointCreated = true;
-      } else {   
+      } else {
 	if ( !convexhull.createHull(vertlist) ) jointCreated = false;
 	else jointCreated = true;
 	if ( jointCreated ) {
@@ -830,8 +830,8 @@ namespace DLFL {
 	  index = 2*(edgeID -  min_edge_id);
 
 	  if ( edge_connect_normals[index+1] == zeroVec )
-	    index = index;	
-	  else index += 1; 
+	    index = index;
+	  else index += 1;
 
 	  sfpn = edge_connect_normals[index];
 	  num_matches=0;
@@ -846,7 +846,7 @@ namespace DLFL {
 		ii = j;
 		VListPtr = vparrayOrdered[ii*numSides];  //first vertex of the face
 		for(int jj=0; jj < corners.size(); jj++) {
-		  if ( VListPtr->getID() == corners[jj]->getVertexID() ) {  
+		  if ( VListPtr->getID() == corners[jj]->getVertexID() ) {
 		    //match rest of the ch face verts with the vertlist
 		    if ( vparrayOrdered[ii*numSides + 1]->getID() ==
 			 (corners[jj]->next())->getVertexID() ) {
@@ -868,7 +868,7 @@ namespace DLFL {
 			     tmp_ch_fvp->getVertexID() )
 			  match = true;
 			tmp_ch_fvp = tmp_ch_fvp->prev();
-		      }				      
+		      }
 		    }
 		    else match = false;	//no match
 		  }
@@ -902,9 +902,9 @@ namespace DLFL {
       if ( vertListSizeMatch && jointCreated ) {
 	if ( matched_face_indx.size() != fvparray.size() )
 	  allFacesMatched = false;
-	else 
+	else
 	  allFacesMatched = true;
-	  
+
       }
       else
 	cout << "vertListSizeMatch not matched for vertex " << vp->getID() << endl;
@@ -950,7 +950,7 @@ namespace DLFL {
 
 	      if ( temp_edge_ptr_array[jj]->getType() != ETdoNotDelete ) {
 		if ( temp_edge_ptr_array[jj]->length() < eLen ) {
-		  eMinPtr = temp_edge_ptr_array[jj]; 
+		  eMinPtr = temp_edge_ptr_array[jj];
 		  eLen = temp_edge_ptr_array[jj]->length();
 		}
 	      }
@@ -962,7 +962,7 @@ namespace DLFL {
 	  if (((Cindex1 % 2 == 0) && (Cindex2 % 2 == 0)) || ((Cindex1 % 2 != 0) && (Cindex2 % 2 != 0)))
 	    doSimilar = true;
 	  if (((Cindex1 % 2 == 0) && (Cindex2 % 2 != 0)) || ((Cindex1 % 2 != 0) && (Cindex2 % 2 == 0)))
-	    doSimilar = false;	
+	    doSimilar = false;
 	  for (int i = 0; i < vparrayOrdered.size(); i++) {
 	    vparrayOrdered[i]->getEdges(temp_edge_ptr_array);
 
@@ -982,7 +982,7 @@ namespace DLFL {
 		  }
 		}
 	      }//if
-	    }//for      
+	    }//for
 	  }//for
 	}
       }
@@ -995,19 +995,19 @@ namespace DLFL {
       temp_face_array.clear();
 
       if ( fvparray.size() !=1 && jointCreated ) obj->splice(convexhull);
-	 
-      //}//end if jointCreated	
+
+      //}//end if jointCreated
       fvparray.clear();
       vertlist.clear();
     }//while
-  
+
     el_first = obj->beginEdge(); el_last = obj->endEdge();
-  
+
     Vector3d N1, N2;
     count =0;
     while ( el_first != el_last ) {
       eptr = (*el_first);
-      ++el_first; 
+      ++el_first;
       if ( eptr->getType() == ETChull ) {
 	if ( edge_connect_fparray[count] != NULL && edge_connect_fparray[count+1] != NULL ) {
 	  connectFaces(obj,edge_connect_fparray[count],edge_connect_fparray[count+1],1); // makes the connections
@@ -1017,7 +1017,7 @@ namespace DLFL {
 	deleteEdge(obj,eptr);
       }
       if ( eptr->getType() == ETdoDelete) deleteEdge(obj,eptr);
-    } 
+    }
     edge_array.clear();
     edge_connect_normals.clear();
     edge_connect_fparray.clear();
@@ -1063,7 +1063,7 @@ namespace DLFL {
 		eptr->getVertexPointers(v2,v1);
 		while ( el_first != el_last )	{
 			(*el_first)->getVertexPointers(vp1,vp2);
-			
+
 			if ( (vp1->numEdges() == v1->numEdges() && vp2->numEdges() == v2->numEdges()) ||
 			 		 (vp1->numEdges() == v2->numEdges() && vp2->numEdges() == v1->numEdges())   ) {
 				eparray.push_back(*el_first);
@@ -1133,7 +1133,7 @@ namespace DLFL {
 
     // Split Valence 2 vertices if 'split' flag is true
     if ( split ) splitValence2Vertices(obj,-1.0);
-  
+
     // Create a crust with specified thickness
     createCrustForWireframe(obj,crust_thickness);
 
@@ -1149,7 +1149,7 @@ namespace DLFL {
 
     // Split Valence 2 vertices if 'split' flag is true
     if ( split ) splitValence2Vertices(obj,-1.0);
-  
+
     // Create a crust with specified thickness
     createCrustForWireframe(obj,crust_thickness);
 

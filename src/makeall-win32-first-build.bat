@@ -32,17 +32,12 @@ cd ..\arcball
 qmake
 mingw32-make
 
-::run qmake && mingw32-make in the include directory
-cd ..
-qmake
-mingw32-make
-
 ::compile the python scripting engine
-cd pydlfl
+cd python
 mingw32-make
 
 ::run qmake and mingw32-make for the main directory
-cd ..\..
+cd ..
 qmake
 ::for language translation files
 lupdate topmod.pro

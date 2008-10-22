@@ -16,10 +16,10 @@ DEFINES += QT_VER=\"$${QT_VERSTR}\" # create a QT_VER macro containing the versi
 QT += opengl \
     xml
 CONFIG += qt \
-    debug \
+    #debug \
     warn_off \
-    link_prl
-    #release \
+    link_prl \
+    release 
 
 # Fenghui: disable pg option
 QMAKE_CXXFLAGS_DEBUG += -pg
@@ -41,12 +41,20 @@ TEMPLATE = app
 SUBDIRS *= include
 MOC_DIR = tmp
 OBJECTS_DIR = tmp
+UI_DIR = tmp
+RCC_DIR = tmp
 
-# UI_DIR = tmp
 # TopModd will be the name for the debug version,
 # and TopMod will be the release version
-# CONFIG(release, debug|release):TARGET = TopMod # -$${VERSION}
-# else:TARGET = TopMod # -$${VERSION}
+CONFIG(debug, debug|release) { 
+	TARGET = TopModd # -$${VERSION}
+	DESTDIR = ../bin/debug/
+}
+else { 
+	TARGET = TopMod # -$${VERSION}
+	DESTDIR = ../bin/release/
+}
+	
 DEPENDPATH += lang \
     include \
     vecmat \
@@ -57,17 +65,13 @@ INCLUDEPATH += include \
     vecmat \
     arcball \
     dlflcore \
-    dlflaux \
-    arcball
+    dlflaux 
 CONFIG(WITH_PYTHON) { 
     message("PYTHON support will be included")
     DEFINES *= WITH_PYTHON
 }
 
-# CONFIG(WITH_SPACENAV) {
-# message("SPACENAV support will be included")
-# DEFINES *= WITH_SPACENAV
-# }
+
 # Operating System Specific Tasks - OS/X
 macx { 
     # dave - testing the macx / linux / win32 define
@@ -142,25 +146,11 @@ else:win32 {
     # dave - testing the macx / linux / win32 define
     DEFINES *= WIN32
     
-    # TopModd will be the name for the debug version,
-    # and TopMod will be the release version
-    CONFIG(debug, debug|release) { 
-        TARGET = TopModd # -$${VERSION}
-        DESTDIR = ../bin/debug/
-    }
-    else { 
-        TARGET = TopMod # -$${VERSION}
-        DESTDIR = ../bin/release/
-    }
-    
     # application icon windows
     RC_FILE = topmod.rc
-    INCLUDEPATH += ../lib
+    INCLUDEPATH += ../lib include
     QMAKE_LFLAGS += -L../lib
-    LIBS += -lvecmat \
-        -ldlflcore \
-        -ldlflaux \
-        -larcball
+    LIBS += -lvecmat -ldlflcore -ldlflaux -larcball
     
     # works with Python25
     CONFIG(WITH_PYTHON) { 
@@ -182,6 +172,7 @@ HEADERS += \
     tools/geometric_tool.h \
     tools/dup_component_tool.h \
     tools/create_torus_tool.h \
+		tools/create_crust_tool.h \
     DLFLScriptEditor.h \
     TopModPreferences.h \
     TdxDeviceWrappers.h \
@@ -207,7 +198,7 @@ HEADERS += \
     TexturingMode.h \
     ExperimentalModes.h \
     DLFLSelection.h \
-    Viewport.h \
+    #Viewport.h \
     TMPatchFace.h \
     TMPatchObject.h \
     TMPatch.h \
@@ -226,7 +217,9 @@ HEADERS += \
     include/PointLight.h \
     include/SpotLight.h \
     CgData.h \
-    include/Camera3.h
+    include/Camera3.h \
+	vecmat/Matrix4x4.h
+	
 FORMS += shortcutdialog.ui \
     stylesheeteditor.ui
 SOURCES += tools/insert_edge_tool.cc \
@@ -239,6 +232,7 @@ SOURCES += tools/insert_edge_tool.cc \
     tools/dup_component_tool.cc \
     tools/geometric_tool.cc \
     tools/create_torus_tool.cc \
+		tools/create_crust_tool.cc \
     DLFLScriptEditor.cc \
     TopModPreferences.cc \
     TdxDeviceWrappers.cc \
@@ -270,7 +264,9 @@ SOURCES += tools/insert_edge_tool.cc \
     stylesheeteditor.cc \
     CgData.cc \
     include/Camera3.cc \
-    CommandCompleter.cc
+    CommandCompleter.cc \
+	vecmat/Matrix4x4.cc
+	
 RESOURCES += application.qrc
 TRANSLATIONS += lang/topmod_de.ts \
     lang/topmod_it.ts \
