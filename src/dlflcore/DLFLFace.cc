@@ -701,6 +701,21 @@ namespace DLFL {
     }
   }
 
+  DLFLVertexPtrArray DLFLFace::getVertices() {
+    DLFLVertexPtrArray vertices;
+    if (head) {
+      DLFLFaceVertexPtr current = head;
+
+      vertices.push_back(current->getVertexPtr());
+      current = current->next();
+      while (current != head) {
+				vertices.push_back(current->getVertexPtr());
+				current = current->next();
+      }
+    }
+    return vertices;
+  }
+
   // Same as above but puts edge pointers into a linked list
   void DLFLFace::getEdges(DLFLEdgePtrList& edges) {
     edges.clear();

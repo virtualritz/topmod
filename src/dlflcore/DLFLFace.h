@@ -246,6 +246,7 @@ public :
   // which should be freed by the caller. Pass a pointer to the array
   // (DLFLEdge **).
   int getEdges(DLFLEdge ** edges);
+  DLFLVertexPtrArray getVertices();
 
   // Get the edges in the face. Different from previous function. Doesn't
   // create new edges, simply stores existing edge pointer from the face

@@ -8,7 +8,9 @@
 
 #include <QtGui>
 #include <QtOpenGL>
+
 #include "MainWindow.h"
+#include "hermite_connect_faces.h"
 
 /*!
 	\ingroup gui
@@ -3277,30 +3279,28 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)  {
                         }
 					break;
 				case ConnectFaceVertices :
-					if (active->numSelectedCorners() >= 2)
-                        {
-                            DLFLFaceVertexPtr sfvptr1, sfvptr2;
-                            sfvptr1 = active->getSelectedFaceVertex(0);
-                            sfvptr2 = active->getSelectedFaceVertex(1);
-                            if (sfvptr1 && sfvptr2)
-                                {
-                                    undoPush();
-                                    setModified(true);
-                                    DLFL::connectFaces( &object,sfvptr1,sfvptr2,num_segments, max_segments,
-                                                        holeHandle_pinching_factor, holeHandle_pinch_center,
-                                                        holeHandle_pinch_width);
-                                    active->clearSelectedFaces();
-                                    active->clearSelectedCorners();
-                                    num_sel_faceverts = 0;
-                                    num_sel_faces = 0;
-                                    active->recomputePatches();
-                                    active->recomputeNormals();
-                                    redraw();
-                                }
-                        } else if ( active->numSelectedCorners() == 1 ) {
-                            num_sel_faceverts = 1;
-                            num_sel_faces = 1;
-                        }
+					if (active->numSelectedCorners() >= 2) {
+            DLFLFaceVertexPtr sfvptr1, sfvptr2;
+            sfvptr1 = active->getSelectedFaceVertex(0);
+            sfvptr2 = active->getSelectedFaceVertex(1);
+            if (sfvptr1 && sfvptr2) {
+              undoPush();
+              setModified(true);
+              DLFL::connectFaces( &object,sfvptr1,sfvptr2,num_segments, max_segments,
+                                  holeHandle_pinching_factor, holeHandle_pinch_center,
+                                  holeHandle_pinch_width);
+              active->clearSelectedFaces();
+              active->clearSelectedCorners();
+              num_sel_faceverts = 0;
+              num_sel_faces = 0;
+              active->recomputePatches();
+              active->recomputeNormals();
+              redraw();
+            }
+          } else if ( active->numSelectedCorners() == 1 ) {
+            num_sel_faceverts = 1;
+            num_sel_faces = 1;
+          }
 					break;
 				case ConnectEdges :
 					if ( active->numSelectedEdges() >= 2 )
@@ -3525,65 +3525,54 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)  {
 						}
 					break;
 				case HermiteConnectFaces :
-					if ( active->numSelectedCorners() >= 2 )
-						{
-							DLFLFaceVertexPtr sfvptr1, sfvptr2;
-							sfvptr1 = active->getSelectedFaceVertex(0);
-							sfvptr2 = active->getSelectedFaceVertex(1);
-							if ( sfvptr1 && sfvptr2 )
-								{
-									undoPush();
-									setModified(true);
-									if ( symmetric_weights )
-										DLFL::hermiteConnectFaces(&object,sfvptr1,sfvptr2,
-																							num_segments,nwt1,nwt1,
-																							max_segments,num_extra_twists,
-                                              pinching_factor,
-                                              pinch_center,
-                                              bubble_factor,
-                                              triangulate_new_faces,
-                                              scherk_collins,
-                                              scherk_collins_pinch,
-                                              scherk_collins_pinch_center,
-                                              scherk_collins_pinch_width,
-                                              scherk_collins_hole_twist,
-                                              scherk_collins_hole_init_skip,
-                                              scherk_collins_hole_skip,
-                                              scherk_collins_hole_seg_skip,
-                                              scherk_collins_hole_num_segs
-                                              );
-									else
-										DLFL::hermiteConnectFaces(&object,sfvptr1,sfvptr2,
-																							num_segments,nwt1,nwt2,
-																							max_segments,num_extra_twists,
-                                              pinching_factor,
-                                              pinch_center,
-                                              bubble_factor,
-                                              triangulate_new_faces,
-                                              scherk_collins,
-                                              scherk_collins_pinch,
-                                              scherk_collins_pinch_center,
-                                              scherk_collins_pinch_width,
-                                              scherk_collins_hole_twist,
-                                              scherk_collins_hole_init_skip,
-                                              scherk_collins_hole_skip,
-                                              scherk_collins_hole_seg_skip,
-                                              scherk_collins_hole_num_segs
-                                              );
-									active->clearSelectedFaces();
-									active->clearSelectedCorners();
-									num_sel_faceverts = 0; num_sel_faces = 0;
-                  active->recomputePatches();
-									active->recomputeNormals();
-									redraw();
-								}
-						}
-					else if ( active->numSelectedCorners() == 1 )
-						{
-							num_sel_faceverts = 1; num_sel_faces = 1;
-						}
-					break;
-				case ReorderFace :
+					if ( active->numSelectedCorners() >= 2 ) {
+            DLFLFaceVertexPtr sfvptr1, sfvptr2;
+            sfvptr1 = active->getSelectedFaceVertex(0);
+            sfvptr2 = active->getSelectedFaceVertex(1);
+            if (sfvptr1 && sfvptr2) {
+              undoPush();
+              setModified(true);
+              Handle * handle = Handle::instance(&object);
+              handle->fvptr1_ = sfvptr1;
+              handle->fvptr2_ = sfvptr2;
+              if (symmetric_weights) {
+                nwt2 = nwt1;
+              }
+              handle->Create();
+              cout << "Handle created..." << endl;
+              handle->HermitePositionVertices();
+              /*
+              DLFL::hermiteConnectFaces(&object,sfvptr1,sfvptr2,
+                                        num_segments,nwt1,nwt2,
+                                        max_segments,num_extra_twists,
+                                        pinching_factor,
+                                        pinch_center,
+                                        bubble_factor,
+                                        triangulate_new_faces,
+                                        scherk_collins,
+                                        scherk_collins_pinch,
+                                        scherk_collins_pinch_center,
+                                        scherk_collins_pinch_width,
+                                        scherk_collins_hole_twist,
+                                        scherk_collins_hole_init_skip,
+                                        scherk_collins_hole_skip,
+                                        scherk_collins_hole_seg_skip,
+                                        scherk_collins_hole_num_segs
+                                        );
+              */
+              active->clearSelectedFaces();
+              active->clearSelectedCorners();
+              num_sel_faceverts = 0;
+              num_sel_faces = 0;
+              active->recomputePatches();
+              active->recomputeNormals();
+              redraw();
+          }
+        } else if ( active->numSelectedCorners() == 1 ) {
+  			  num_sel_faceverts = 1; num_sel_faces = 1;
+        }
+				break;
+  		case ReorderFace :
 					if ( active->numSelectedCorners() >= 1 )
 						{
 							DLFLFaceVertexPtr sfvptr = active->getSelectedFaceVertex(0);

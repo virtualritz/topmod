@@ -16,10 +16,10 @@ DEFINES += QT_VER=\"$${QT_VERSTR}\" # create a QT_VER macro containing the versi
 QT += opengl \
     xml
 CONFIG += qt \
-    #debug \
     warn_off \
     link_prl \
     release 
+    #debug
 
 # Fenghui: disable pg option
 QMAKE_CXXFLAGS_DEBUG += -pg
@@ -203,6 +203,7 @@ HEADERS += \
     TMPatchObject.h \
     TMPatch.h \
     DLFLRenderer.h \
+    hermite_connect_faces.h \
     stylesheeteditor.h \
     include/BaseObject.h \
     include/Constants.h \
@@ -256,6 +257,7 @@ SOURCES += tools/insert_edge_tool.cc \
     ExperimentalModes.cc \
     DLFLLighting.cc \
     DLFLRenderer.cc \
+    hermite_connect_faces.cc \
     DLFLSelection.cc \
     DLFLUndo.cc \
     DLFLLocator.cc \

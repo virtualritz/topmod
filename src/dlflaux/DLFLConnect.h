@@ -10,6 +10,8 @@
 
 namespace DLFL {
 
+  void make_faces_same_size(DLFLObjectPtr obj, DLFLFacePtr f1, DLFLFacePtr f2);
+  // Subdivide edges so that the two given faces have same number of edges.
   void connectEdges( DLFLObjectPtr obj, DLFLEdgePtr eptr1, DLFLFacePtr fptr1,
          DLFLEdgePtr eptr2, DLFLFacePtr fptr2, bool check=true);
   void connectEdgesWithoutLoopCheck( DLFLObjectPtr obj, DLFLEdgePtr eptr1, DLFLFacePtr fptr1,

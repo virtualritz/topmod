@@ -3,6 +3,7 @@
 #include <QtGui>
 
 #include "HighgenusMode.h"
+#include "hermite_connect_faces.h"
 
 /*!
 	\ingroup gui
@@ -561,13 +562,24 @@ void HighgenusMode::setupAddHandleSI(){
 	connect(addHandleSIHoleSegSkipSpinBox, SIGNAL(valueChanged(double)),
           this, SLOT(ChangeScherkCollinsHoleSegSkip(double)));
 
+	addHandleSIButton = new QPushButton(tr("Done"), this);
+	connect(addHandleSIButton, SIGNAL(clicked()), this, SLOT(AddHandleSIDone()));
+	mAddHandleSILayout->addWidget(addHandleSIButton,19,0,1,2);
 
-	mAddHandleSILayout->setRowStretch(18,1);
+	mAddHandleSILayout->setRowStretch(19,1);
 	mAddHandleSILayout->setColumnStretch(2,1);
 	mAddHandleSIWidget->setWindowTitle(tr("Add Handle (Shape Interpolation)"));
 	mAddHandleSIWidget->setLayout(mAddHandleSILayout);
 
 }
+
+void HighgenusMode::AddHandleSIDone() {
+  Handle *handle = Handle::instance();
+  if (handle) {
+    handle->Reset();
+  }
+}
+
 void HighgenusMode::toggleTriangulateFace(int state){
 	((MainWindow*)mParent)->toggleTriangulateNewFaces(state);
   if ((bool)state) {

@@ -99,6 +99,7 @@ public slots:
 	// void triggerCreateTorus();
 	void triggerAddHoleHandleCV();
 	void triggerAddHandleSI();
+	void AddHandleSIDone();
 	void triggerRindModelingScaling();
 	void triggerRindModelingThickness();
 	void triggerWireframeModeling();
@@ -152,6 +153,7 @@ private:
 	QLabel *mengerSpongeThresholdLabel;
 	QLabel *columnModelingNumSegmentsLabel;
 
+	QPushButton *addHandleSIButton;
 
 	QGridLayout *mMultiFaceAlgorithmLayout;
 

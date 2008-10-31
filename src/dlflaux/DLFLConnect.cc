@@ -372,7 +372,7 @@ namespace DLFL {
     if ( numsegs == 1 ) {
       DLFLEdgePtrArray new_edges = connectFaces(obj,fvptr1,fvptr2);
       ScherkCollinsHandle(obj, new_edges, sc_pinch, sc_pinch_center, sc_pinch_width,
-      hole_twist, init_skip, skip, pinch_num_segs);
+                          hole_twist, init_skip, skip, pinch_num_segs);
       return;
     }
 
@@ -383,44 +383,50 @@ namespace DLFL {
     // Reorder both faces so that they start at the selected corners
     // Reverse the second face before reordering for proper connection
     DLFLFacePtr f1, f2;
-    f1 = fvptr1->getFacePtr();  f2 = fvptr2->getFacePtr();
+    f1 = fvptr1->getFacePtr();
+    f2 = fvptr2->getFacePtr();
 
     // Instead of return from here, subdivide the longest edge in the face
     // with smaller size.
-    if ( f1->size() != f2->size() ) {
+    if (f1->size() != f2->size()) {
       make_faces_same_size(obj, f1, f2);
     }
 
-    f1->reorder(fvptr1); f2->reverse(); f2->reorder(fvptr2);
+    f1->reorder(fvptr1);
+    f2->reverse();
+    f2->reorder(fvptr2);
   
     // Get the coordinates of the vertices of the 2 faces
     Vector3dArray verts1, verts2;
-    f1->getVertexCoords(verts1); f2->getVertexCoords(verts2);
+    f1->getVertexCoords(verts1);
+    f2->getVertexCoords(verts2);
 
     // Get the normals to the 2 faces. Second face is already reversed
     Vector3d n1, n2;
-    n1 = f1->computeNormal(); n2 = f2->computeNormal();
+    n1 = f1->computeNormal();
+    n2 = f2->computeNormal();
 
     // Reverse second face to take it back to it's original order
-    f2->reverse(); f2->reorder(fvptr2);
-
+    f2->reverse();
+    f2->reorder(fvptr2);
   
     //--- Find interpolation parameters ---//
-
     // Find and store centroid of 2 polygons
-    Vector3d cen1 = centroid(verts1), cen2 = centroid(verts2);
+    Vector3d cen1 = centroid(verts1);
+    Vector3d cen2 = centroid(verts2);
 
     // Translate both polygons to origin
-    translate(verts1,Vector3d(0,0,0)); 
-    translate(verts2,Vector3d(0,0,0));
+    translate(verts1, Vector3d(0, 0, 0)); 
+    translate(verts2, Vector3d(0, 0, 0));
 
     // The plane to rotate both polygons to is found as follows.
     // Find the vector from the centroid of the second polygon to
     // the centroid of the first polygon. This will be the normal
     // to the plane
-    Vector3d rotplane(cen2-cen1); normalize(rotplane);
-    rotate(verts1,n1,rotplane);
-    rotate(verts2,n2,rotplane);
+    Vector3d rotplane(cen2-cen1);
+    normalize(rotplane);
+    rotate(verts1, n1, rotplane);
+    rotate(verts2, n2, rotplane);
   
     // The reference X and Y axes are chosen as follows
     // x-axis : vector from centroid (origin) to the midpoint of the last edge in the first polygon
@@ -429,13 +435,14 @@ namespace DLFL {
     Vector3d xref, yref;
     int numverts = verts1.size();
 
-    xref = (verts1[0]+verts1[numverts-1]); normalize(xref);
+    xref = verts1[0] + verts1[numverts-1];
+    normalize(xref);
     yref = rotplane % xref;
 
     // If either of the 2 polygons has a normal pointing in exactly the opposite direction
     // as the normal to the rotation plane, it can't be rotated to the rotation plane
     // and hence the handle can't be created without additional information
-    if ( Abs(n1*rotplane + 1.0) < ZERO || Abs(n2*rotplane + 1.0) < ZERO ) {
+    if (Abs(n1 * rotplane + 1.0) < ZERO || Abs(n2 * rotplane + 1.0) < ZERO) {
       cout << "Normals are opposite. Can't create handle!" << endl;
       return;
     }
@@ -444,26 +451,24 @@ namespace DLFL {
     DoubleArray angle1, angle2, distance1, distance2;
 
     // resolvePolygon does the resize for the arrays
-    resolvePolygon(verts1,xref,yref,angle1,distance1);
-    resolvePolygon(verts2,xref,yref,angle2,distance2);
+    resolvePolygon(verts1, xref, yref, angle1, distance1);
+    resolvePolygon(verts2, xref, yref, angle2, distance2);
 
     // If the angle for the first point in the second polygon is greater than
     // the angle for the first point in the first polygon, and the difference
     // is greater than pi, subtract 2pi from all angles in second polygon
     // to avoid more than 1 twist
-    if ( (angle2[0] - angle1[0]) > M_PI ) {
-      for (int i=0; i < angle2.size(); ++i)
-        angle2[i] -= 2.0*M_PI;
+    if (angle2[0] - angle1[0] > M_PI) {
+      for (int i=0; i < angle2.size(); ++i) angle2[i] -= 2.0*M_PI;
     }
 
     // If we want any extra twists, add multiples of 2pi to second polygon angles
-    if ( numtwists > 0 ) {
-      for (int i=0; i < angle2.size(); ++i)
-        angle2[i] += 2.0*M_PI*numtwists;
+    if (numtwists > 0) {
+      for (int i=0; i < angle2.size(); ++i) angle2[i] += 2.0 * M_PI * numtwists;
     }
        
     // Now use the resolution parameters to find intermediate polygons
-    double t, dt = 1.0/double(numsegs);
+    double t, dt = 1.0 / double(numsegs);
     Vector3dArray verts;
     DoubleArray angle, distance;
     Vector3d p,v,dvdt;
@@ -500,8 +505,8 @@ namespace DLFL {
     
       //pinching factor
       //calculate t2 for bezier curve in pinching
-      if(t <= pinchCenter) //use the bezier equation for the first portion of the handle
-      {
+      if(t <= pinchCenter) {
+        //use the bezier equation for the first portion of the handle
         t2 = (t/pinchCenter); //t2 goes from 0 to 1
         t2 = pow(t2, bubbleExp); //the bubble factor affects the speed we travel on the bezier curve
         w0 = (1-t2)*(1-t2); //weight 0
@@ -509,8 +514,8 @@ namespace DLFL {
         w2 = t2*t2; //weight 2
         pinch_scaling = w0 + (w1 * pinch) + (w2 * pinch); //weighted sum
       }
-      else //use the bezier equation for the second portion of the handle
-      {
+      else {
+        //use the bezier equation for the second portion of the handle
         t2 = 1-((t-pinchCenter)/(1-pinchCenter)); //t2 goes from 0 to 1
         t2 = pow(t2, bubbleExp); //the bubble factor affects the speed we travel on the bezier curve
         w0 = (1-t2)*(1-t2); //weight 0

@@ -5,6 +5,7 @@
 // All these are static methods
 #include <queue>
 #include "MainWindow.h"
+#include "hermite_connect_faces.h"
 
 void MainWindow::load_texture() {
 	QString fileName = QFileDialog::getOpenFileName(this,
@@ -484,23 +485,27 @@ void MainWindow::changeScherkCollinsHoleSegSkip(double value) {
   scherk_collins_hole_seg_skip = (int)value;
 }
 
-
-
-void MainWindow::changeNumSegments2(double value){
-
+void MainWindow::changeNumSegments2(double value) {
 }
 
-void MainWindow::changeMaxSegments2(double value){
-
+void MainWindow::changeMaxSegments2(double value) {
 }
 
 void MainWindow::changeWeight1(double value) {
+  Handle *handle = Handle::instance();
+  if (handle) {
+    handle->wt1_ = value;
+    if (symmetric_weights) handle->wt2_ = value;
+    handle->HermitePositionVertices();
+	  redraw();
+  }
 	MainWindow::nwt1 = value;
 }
 
 void MainWindow::toggleScherkCollins(int state) {
 	scherk_collins = bool(state);
 }
+
 void MainWindow::toggleTriangulateNewFaces(int state) {
 	MainWindow::triangulate_new_faces = bool(state);
 }
@@ -510,6 +515,12 @@ void MainWindow::toggleSymmetricWeightsFlag(int state) {
 }
 
 void MainWindow::changeWeight2(double value) {
+  Handle *handle = Handle::instance();
+  if (handle) {
+    handle->wt2_ = value;
+    handle->HermitePositionVertices();
+	  redraw();
+  }
 	MainWindow::nwt2 = value;
 }
 
@@ -519,12 +530,36 @@ void MainWindow::changeExtraTwists(double value) {
 
 //added by Ryan
 void MainWindow::changePinch(double value) {
+  Handle *handle = Handle::instance();
+  if (handle) {
+    if (symmetric_weights) handle->wt2_ = handle->wt1_;
+    else handle->wt2_ = nwt2;
+    handle->pinch_ = value;
+    handle->HermitePositionVertices();
+	  redraw();
+  }
 	MainWindow::pinching_factor = value;
 }
 void MainWindow::changePinchCenter(double value) {
+  Handle *handle = Handle::instance();
+  if (handle) {
+    if (symmetric_weights) handle->wt2_ = handle->wt1_;
+    else handle->wt2_ = nwt2;
+    handle->pinch_center_ = value;
+    handle->HermitePositionVertices();
+	  redraw();
+  }
 	MainWindow::pinch_center = value;
 }
 void MainWindow::changeBubble(double value) {
+  Handle *handle = Handle::instance();
+  if (handle) {
+    if (symmetric_weights) handle->wt2_ = handle->wt1_;
+    else handle->wt2_ = nwt2;
+    handle->pinch_center_ = value;
+    handle->HermitePositionVertices();
+	  redraw();
+  }
 	MainWindow::bubble_factor = value;
 }
 void MainWindow::changeHoleHandlePinchValue(double value) {
